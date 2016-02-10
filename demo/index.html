@@ -6,24 +6,26 @@
 <body>
   <script src="../dist/routility.js"></script>
   <script>
+  function pp(obj) {
+    console.log(JSON.stringify(obj, null, 4));
+  }
+
   var r = Routility.defineRoute;
 
   var d = r('/', 'root', [
     r('/', 'index'),
     r('/home', 'home'),
-    r('/login', 'login'),
     r('/user/:id', 'user', [
-      // r('/', 'root'),
       r('/profile', 'profile'),
     ]),
   ]);
 
   var n = Routility.start(d);
 
-  n('/home');
-  n('/user/123');
-  n('/user/123/profile');
-  n('/user/123/profile?q=abc');
+  pp(n());
+  pp(n('/home'));
+  pp(n('/user/123/profile'));
+  pp(n('/user/123/profile?q=abc'));
   </script>
 </body>
 </html>

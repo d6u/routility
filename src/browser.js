@@ -22,7 +22,7 @@ function generateDescriptions({path, name, children}) {
   return results;
 }
 
-function buildObj(parts) {
+function buildState(parts) {
   const obj = {};
 
   let cur = obj;
@@ -35,24 +35,36 @@ function buildObj(parts) {
   return obj;
 }
 
-export function start(def) {
+export function start(def, { browserHistory }) {
   const router = new RouteRecognizer();
 
   for (const desc of generateDescriptions(def)) {
     router.add(desc);
   }
 
+  function getCurrentState(pathname, search) {
+    const parts = router.recognize(pathname + search);
+    return {...buildState(parts), queryParams: parts.queryParams};
+  }
+
   const history = createHashHistory();
+
+  let currentState = getCurrentState(location.hash.slice(1), location.search);
 
   history.listen(({pathname, search, action}) => {
     if (action !== 'PUSH') {
       return;
     }
-    const parts = router.recognize(pathname + search);
-    console.log(JSON.stringify({...buildObj(parts), queryParams: parts.queryParams}, null, 4));
+    currentState = getCurrentState(pathname, search);
   });
 
   return function (path) {
+    if (path == null) {
+      return currentState;
+    }
     history.push(path);
+    // Route change is sync,
+    // so we can return new state within the same run loop
+    return currentState;
   };
 }
