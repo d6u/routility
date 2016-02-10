@@ -1,0 +1,48 @@
+{
+  "name": "routility",
+  "version": "0.0.1",
+  "description": "Routing utility converting urls to hash maps",
+  "main": "./lib/server.js",
+  "jsnext:main": "./src/browser.js",
+  "browser": "./lib/browser.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/d6u/routility.git"
+  },
+  "keywords": [
+    "router",
+    "route"
+  ],
+  "author": "Daiwei Lu <daiweilu123@gmail.com> (http://daiwei.lu)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/d6u/routility/issues"
+  },
+  "homepage": "https://github.com/d6u/routility#readme",
+  "dependencies": {
+    "history": "^2.0.0",
+    "route-recognizer": "^0.1.9"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.5.1",
+    "babel-core": "^6.5.1",
+    "babel-loader": "^6.2.2",
+    "babel-preset-es2015": "^6.5.0",
+    "rimraf": "^2.5.1",
+    "webpack": "^1.12.13"
+  },
+  "scripts": {
+    "lint": "eslint src webpack.config.*",
+    "test": "karma start",
+    "check": "npm run lint && npm test",
+    "clean": "rimraf lib",
+    "build:lib": "babel src --out-dir lib",
+    "build:umd": "webpack src/index.js dist/routility.js --config webpack.config.development.js",
+    "build:umd:min": "webpack src/index.js dist/routility.min.js --config webpack.config.production.js",
+    "build": "npm run build:lib && npm run build:umd && npm run build:umd:min",
+    "preversion": "npm run check",
+    "postversion": "git push && git push --tags",
+    "prepublish": "npm run clean && npm run build",
+    "watch:test": "karma start --no-single-run"
+  }
+}
