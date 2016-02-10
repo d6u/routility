@@ -1,6 +1,6 @@
 {
   "name": "routility",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "Routing utility converting urls to hash maps",
   "main": "./lib/server.js",
   "jsnext:main": "./src/browser.js",
