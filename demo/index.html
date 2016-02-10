@@ -1,0 +1,29 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Routility Demo</title>
+</head>
+<body>
+  <script src="../dist/routility.js"></script>
+  <script>
+  var r = Routility.defineRoute;
+
+  var d = r('/', 'root', [
+    r('/', 'index'),
+    r('/home', 'home'),
+    r('/login', 'login'),
+    r('/user/:id', 'user', [
+      // r('/', 'root'),
+      r('/profile', 'profile'),
+    ]),
+  ]);
+
+  var n = Routility.start(d);
+
+  n('/home');
+  n('/user/123');
+  n('/user/123/profile');
+  n('/user/123/profile?q=abc');
+  </script>
+</body>
+</html>
