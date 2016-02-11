@@ -1,5 +1,5 @@
-import RouteRecognizer from 'route-recognizer';
 import { createHashHistory, createHistory } from 'history';
+import { createRecognizer } from 'routility-util';
 
 /**
  * Define route
@@ -22,66 +22,6 @@ function r(path, name, children = null) {
 }
 
 /**
- * Generate route description for route-recognizer
- *
- * @param {RouteDefinition} definition
- *
- * @return {Object[][]} The base object should look like:
- *                      {
- *                        path: string;
- *                        handler: string;
- *                      }
- */
-function generateDescriptions({path, name, children}) {
-  const current = [{ path, handler: name }];
-  const results = [];
-
-  if (!children) {
-    return [ current ];
-  }
-
-  for (const child of children) {
-    for (const desc of generateDescriptions(child)) {
-      results.push(current.concat(desc));
-    }
-  }
-
-  return results;
-}
-
-/**
- * Take route segments returned from "routeRecognizer.recongnize" and convert
- * them into a single object
- *
- * @param  {Object} parts Array like structure returned by "routeRecognizer.recongnize"
- *
- * @return {Object} Should look like:
- *                  {
- *                    "root": {
- *                      "user": {
- *                        "id": "123",
- *                        "profile": {}
- *                      }
- *                    },
- *                    "queryParams": {
- *                      "q": "abc"
- *                    }
- *                  }
- */
-function buildState(parts) {
-  const obj = {};
-
-  let cur = obj;
-  for (let i = 0; i < parts.length; i++) {
-    const { handler: name, params } = parts[i];
-    cur[name] = {...params};
-    cur = cur[name];
-  }
-
-  return obj;
-}
-
-/**
  * Start listen to route changes
  *
  * @param {Object} opts
@@ -92,29 +32,15 @@ function buildState(parts) {
  *
  * @return {navTo} A function to help update current route and get current state
  */
-function start({
-  definition,
-  handler,
-  browserHistory = false,
-}) {
-  const router = new RouteRecognizer();
-
-  for (const desc of generateDescriptions(definition)) {
-    router.add(desc);
-  }
-
-  function getCurrentState(pathname, search) {
-    const parts = router.recognize(pathname + search);
-    return {...buildState(parts), queryParams: parts.queryParams};
-  }
-
+function start({ definition, handler, browserHistory = false }) {
+  const recongnize = createRecognizer(definition);
   const history = (browserHistory ? createHistory : createHashHistory)();
 
   let isActivated = false;
   let currentState;
 
   history.listen(({pathname, search, action}) => {
-    currentState = getCurrentState(pathname, search);
+    currentState = recongnize(pathname + search);
     if (!isActivated) {
       isActivated = true;
     } else if (action === 'POP') {

@@ -7,7 +7,7 @@
   "browser": "./lib/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/d6u/routility.git"
+    "url": "git+https://github.com/Routility/routility.git"
   },
   "keywords": [
     "router",
@@ -16,9 +16,9 @@
   "author": "Daiwei Lu <daiweilu123@gmail.com> (http://daiwei.lu)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/d6u/routility/issues"
+    "url": "https://github.com/Routility/routility/issues"
   },
-  "homepage": "https://github.com/d6u/routility#readme",
+  "homepage": "https://github.com/Routility/routility#readme",
   "files": [
     "dist",
     "lib",
@@ -27,7 +27,8 @@
   ],
   "dependencies": {
     "history": "^2.0.0",
-    "route-recognizer": "^0.1.9"
+    "route-recognizer": "^0.1.9",
+    "routility-util": "file:///Users/daiwei/dev/projects/Routility/routility-util"
   },
   "devDependencies": {
     "babel-cli": "^6.5.1",
