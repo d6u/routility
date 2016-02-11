@@ -42,7 +42,7 @@
     "lint": "eslint src webpack.config.*",
     "test": "karma start",
     "check": "npm run lint && npm test",
-    "clean": "rimraf lib",
+    "clean": "rimraf lib dist",
     "build:lib": "babel src --out-dir lib",
     "build:umd": "webpack src/index.js dist/routility.js --config webpack.config.development.js",
     "build:umd:min": "webpack src/index.js dist/routility.min.js --config webpack.config.production.js",

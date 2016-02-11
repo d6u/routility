@@ -4,3 +4,5 @@
 *.log
 /dist
 /coverage
+/demo/*.js
+/demo/*.js.map
