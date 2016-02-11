@@ -46,6 +46,7 @@
     "build:lib": "babel src --out-dir lib",
     "build:umd": "webpack src/index.js dist/routility.js --config webpack.config.development.js",
     "build:umd:min": "webpack src/index.js dist/routility.min.js --config webpack.config.production.js",
+    "build:demo": "webpack src/index.js demo/routility.js --config webpack.config.development.js",
     "build": "npm run build:lib && npm run build:umd && npm run build:umd:min",
     "preversion": "npm run check",
     "postversion": "git push && git push --tags",

@@ -51,10 +51,14 @@ function buildState(parts) {
   return obj;
 }
 
-function start(def, { browserHistory = false } = {}) {
+function start({
+  definition,
+  handler,
+  browserHistory = false,
+}) {
   const router = new RouteRecognizer();
 
-  for (const desc of generateDescriptions(def)) {
+  for (const desc of generateDescriptions(definition)) {
     router.add(desc);
   }
 
@@ -65,15 +69,16 @@ function start(def, { browserHistory = false } = {}) {
 
   const history = (browserHistory ? createHistory : createHashHistory)();
 
-  let currentState = getCurrentState(
-    browserHistory ? location.pathname : location.hash.slice(1),
-    location.search);
+  let isActivated = false;
+  let currentState;
 
   history.listen(({pathname, search, action}) => {
-    if (action !== 'PUSH') {
-      return;
-    }
     currentState = getCurrentState(pathname, search);
+    if (!isActivated) {
+      isActivated = true;
+    } else if (action === 'POP') {
+      handler(currentState);
+    }
   });
 
   return function (path) {
@@ -81,7 +86,7 @@ function start(def, { browserHistory = false } = {}) {
       return currentState;
     }
     history.push(path);
-    // Route change is sync,
+    // Route change listen handler is sync,
     // so we can return new state within the same run loop
     return currentState;
   };

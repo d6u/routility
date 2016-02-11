@@ -12,15 +12,23 @@
 
     var r = Routility.r;
 
-    var definition = r('/', 'root', [
-      r('/', 'index'),
-      r('/home', 'home'),
-      r('/user/:id', 'user', [
-        r('/profile', 'profile'),
-      ]),
-    ]);
+    var definition = (
+      r('/', 'root', [
+        r('/', 'index'),
+        r('/home', 'home'),
+        r('/user/:id', 'user', [
+          r('/profile', 'profile'),
+        ]),
+      ])
+    );
 
-    var navTo = Routility.start(definition, {browserHistory: true});
+    var navTo = Routility.start({
+      browserHistory: true,
+      definition: definition,
+      handler: function(state) {
+        pp(state);
+      },
+    });
 
     pp(navTo());
     pp(navTo('/home'));
