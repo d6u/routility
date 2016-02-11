@@ -1,7 +1,23 @@
 import RouteRecognizer from 'route-recognizer';
-import { createHashHistory } from 'history';
+import { createHashHistory, createHistory } from 'history';
 
-export function defineRoute(path, name, children = null) {
+/**
+ * Define route
+ *
+ * @param {string}            path       Path of current route. This is always relative to parent.
+ *                                       E.g. if "/user" is defined as a child of "/home", it will
+ *                                       recongnize url of "/home/user"
+ * @param {string}            name       Name of current route
+ * @param {RouteDefinition[]} [children] Child route
+ *
+ * @return {RouteDefinition} The RouteDefinition is simply an object with three properties:
+ *                           {
+ *                           	 path: string;
+ *                           	 name: string;
+ *                           	 children: RouteDefinition[];
+ *                           }
+ */
+function r(path, name, children = null) {
   return {path, name, children};
 }
 
@@ -35,7 +51,7 @@ function buildState(parts) {
   return obj;
 }
 
-export function start(def, { browserHistory }) {
+function start(def, { browserHistory = false } = {}) {
   const router = new RouteRecognizer();
 
   for (const desc of generateDescriptions(def)) {
@@ -47,9 +63,11 @@ export function start(def, { browserHistory }) {
     return {...buildState(parts), queryParams: parts.queryParams};
   }
 
-  const history = createHashHistory();
+  const history = (browserHistory ? createHistory : createHashHistory)();
 
-  let currentState = getCurrentState(location.hash.slice(1), location.search);
+  let currentState = getCurrentState(
+    browserHistory ? location.pathname : location.hash.slice(1),
+    location.search);
 
   history.listen(({pathname, search, action}) => {
     if (action !== 'PUSH') {
@@ -68,3 +86,8 @@ export function start(def, { browserHistory }) {
     return currentState;
   };
 }
+
+export {
+  r,
+  start,
+};

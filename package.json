@@ -2,9 +2,9 @@
   "name": "routility",
   "version": "0.0.0",
   "description": "Routing utility converting urls to hash maps",
-  "main": "./lib/server.js",
-  "jsnext:main": "./src/browser.js",
-  "browser": "./lib/browser.js",
+  "main": "./lib/index.js",
+  "jsnext:main": "./src/index.js",
+  "browser": "./lib/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/d6u/routility.git"
@@ -19,6 +19,12 @@
     "url": "https://github.com/d6u/routility/issues"
   },
   "homepage": "https://github.com/d6u/routility#readme",
+  "files": [
+    "dist",
+    "lib",
+    "src",
+    "server.js"
+  ],
   "dependencies": {
     "history": "^2.0.0",
     "route-recognizer": "^0.1.9"
@@ -38,8 +44,8 @@
     "check": "npm run lint && npm test",
     "clean": "rimraf lib",
     "build:lib": "babel src --out-dir lib",
-    "build:umd": "webpack src/browser.js dist/routility.js --config webpack.config.development.js",
-    "build:umd:min": "webpack src/browser.js dist/routility.min.js --config webpack.config.production.js",
+    "build:umd": "webpack src/index.js dist/routility.js --config webpack.config.development.js",
+    "build:umd:min": "webpack src/index.js dist/routility.min.js --config webpack.config.production.js",
     "build": "npm run build:lib && npm run build:umd && npm run build:umd:min",
     "preversion": "npm run check",
     "postversion": "git push && git push --tags",

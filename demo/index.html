@@ -4,28 +4,28 @@
   <title>Routility Demo</title>
 </head>
 <body>
-  <script src="../dist/routility.js"></script>
+  <script src="routility.js"></script>
   <script>
-  function pp(obj) {
-    console.log(JSON.stringify(obj, null, 4));
-  }
+    function pp(obj) {
+      console.log(JSON.stringify(obj, null, 4));
+    }
 
-  var r = Routility.defineRoute;
+    var r = Routility.r;
 
-  var d = r('/', 'root', [
-    r('/', 'index'),
-    r('/home', 'home'),
-    r('/user/:id', 'user', [
-      r('/profile', 'profile'),
-    ]),
-  ]);
+    var definition = r('/', 'root', [
+      r('/', 'index'),
+      r('/home', 'home'),
+      r('/user/:id', 'user', [
+        r('/profile', 'profile'),
+      ]),
+    ]);
 
-  var n = Routility.start(d);
+    var navTo = Routility.start(definition, {browserHistory: true});
 
-  pp(n());
-  pp(n('/home'));
-  pp(n('/user/123/profile'));
-  pp(n('/user/123/profile?q=abc'));
+    pp(navTo());
+    pp(navTo('/home'));
+    pp(navTo('/user/123/profile'));
+    pp(navTo('/user/123/profile?q=abc'));
   </script>
 </body>
 </html>
