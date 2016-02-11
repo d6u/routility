@@ -28,7 +28,7 @@
   "dependencies": {
     "history": "^2.0.0",
     "route-recognizer": "^0.1.9",
-    "routility-util": "file:///Users/daiwei/dev/projects/Routility/routility-util"
+    "routility-util": "0.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.5.1",
