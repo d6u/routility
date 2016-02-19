@@ -11,7 +11,7 @@ var Routility = require('routility');
 var r = Routility.r;
 var redirect = Routility.redirect;
 
-var routes = ( // Parentheses is not required, it's nice to align all the routes
+var routes = ( // Parentheses are not required, it looks nice to align all the routes
   r('/', 'root', [
     redirect('/', '/login'),
     r('/login', 'login'),
@@ -34,7 +34,7 @@ navTo('/user/123'); // Will first change url to "/user/123" and return new state
 
 ### `r(path, name, subRoutes) -> RouteDefinition`
 
-Define route hierarchy. (The `(` and `)` are not necessary, it just help align this `r` function calls, make them nice to read.) `name` argument is related to the structure of `state` object.
+Define route hierarchy. (The `(` and `)` are not necessary, it just help align the `r` function calls, makes them nice to read.) `name` argument is related to the structure of `state` object.
 
 ```js
 var routes = (
