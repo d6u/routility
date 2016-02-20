@@ -1,6 +1,6 @@
 # Routility
 
-A generic routing utility to convert URLs to objects, so your application logic can consume them without being limited by a specify API set.
+A generic routing utility navigate users in browser and convert URLs to objects, so your application logic can consume them without wrestling with a specify API, which uncovers the endless possibilities of doing awesome stuff. Because all you need to do now is managing data instead of learning 3rd party libraries. This works exceptionally great with architectures that are reactive or has a single source of truth, e.g. React, Redux or Flux in general.
 
 **Before reaching 1.0, API and semantic will change between minor versions.**
 
@@ -22,13 +22,31 @@ var routes = ( // Parentheses are not required, it looks nice to align all the r
   ])
 );
 
-var navTo = Routility.start(routes, function (state) {
+var navTo = Routility.start(routes, function (data) {
   // this handler will only be called when routing first start
   // and users use browser back and forward button to navigate
+  // "data.state" will contain current state
 });
 
-navTo('/user/123'); // Will first change url to "/user/123" and return new state
+// Will first change url to "/user/123" and return new state
+// Those changes all happen synchronously
+navTo('/user/123');
+// This returns:
+// {
+//   root: {
+//     user: {
+//       id: '123',
+//       index: {}
+//     }
+//   }
+// }
 ```
+
+## Why
+
+Many front end frameworks and view libraries have to manage state in their application. There are many solutions to manage state. But integrated route management is often overlooked. Most libraries will have a router abstraction to deal with routing in the browser. A common mistake of those abstractions is that they didn't treat routes as data. This caused their API is be highly coupled with specific use cases.
+
+A route to a browser application should just be some states. Nothing more. When we interpret route at this level, the application logic can be easily fully integrated with the rest of state management layer, which enables lots of possibilities.
 
 ## API
 
@@ -51,17 +69,24 @@ var routes = (
 
 ### `redirect(path, targetPath)`
 
-`path` has the same semantic as `path` argument of `r` function. `targetPath` is an **absolute** url to the new path.
+`path` has the same semantic as the `path` argument of `r` function. `targetPath` is an **absolute** path to the new path.
 
 ### `start(definition, handler, [opts]) -> navTo`
 
 Start routing for browser. Return a `navTo` helper. `handler` will only be called when first start routing, then on every time user use browser back and forward button to navigate. Refer to [Structure of `state`](#Structure of `state`) section to learn what the `state` object will look like.
 
 ```js
-var navTo = start(definition, function (state) {
+var navTo = start(definition, function (data) {
   // You can notify the app state has changed here
 });
 ```
+
+#### `handler(data)`
+
+`data` argument of `handler` will have `type` and `state` properties.
+
+- `type: string` Can be "INITIAL" and "BROWSER"
+- `state: string` Same as state object returned by `navTo` function
 
 #### options
 
@@ -105,19 +130,20 @@ r('/', 'root', [
   "queryParams": {}
 }
 
-// For '/sign-in'
-{
-  "root": {
-    "login": {} // Show login instead because it hits a redirect route
-  },
-  "queryParams": {}
-}
-
 // For '/login'
 {
   "root": {
     "login": {}
   },
+  "queryParams": {}
+}
+
+// For '/sign-in'
+{
+  "root": {
+    "login": {} // Show login instead because it hits a redirect route
+  },
+  "redirectTo": "/login", // This property is useful in server context while using "parse" function
   "queryParams": {}
 }
 
