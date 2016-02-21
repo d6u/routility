@@ -6,34 +6,38 @@
 <body>
   <script src="routility.js"></script>
   <script>
-    function pp(obj) {
-      console.log(JSON.stringify(obj, null, 4));
+    function prettyPrint(label, obj) {
+      console.log(label, JSON.stringify(obj, null, 4));
     }
 
     var r = Routility.r;
+    var redirect = Routility.redirect;
+    var parse = Routility.parse;
 
-    var definition = (
+    var routes = ( // Parentheses are not required, it looks nice to align all the routes
       r('/', 'root', [
-        r('/', 'index'),
-        r('/home', 'home'),
+        redirect('/', '/login'),
+        r('/login', 'login'),
         r('/user/:id', 'user', [
-          r('/profile', 'profile'),
-        ]),
+          r('/', 'index'), // If you don't define "/", "/user/:id" won't be handled
+          r('/profile', 'profile')
+        ])
       ])
     );
 
-    var navTo = Routility.start({
-      browserHistory: true,
-      definition: definition,
-      handler: function(state) {
-        pp(state);
-      },
+    // You can use "parse" to convert path to state without triggering navigation
+    prettyPrint('parse', parse(routes, '/'));
+
+    var navTo = Routility.start(routes, function (state) {
+      prettyPrint('handler', state);
     });
 
-    pp(navTo());
-    pp(navTo('/home'));
-    pp(navTo('/user/123/profile'));
-    pp(navTo('/user/123/profile?q=abc'));
+    prettyPrint('navTo', navTo());
+    prettyPrint('navTo /', navTo('/'));
+    prettyPrint('navTo /login', navTo('/login'));
+    prettyPrint('navTo /user/123', navTo('/user/123'));
+    prettyPrint('navTo /user/123/profile', navTo('/user/123/profile'));
+    prettyPrint('navTo /user/123/profile?q=abc', navTo('/user/123/profile?q=abc'));
   </script>
 </body>
 </html>

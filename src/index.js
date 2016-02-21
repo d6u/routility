@@ -53,22 +53,37 @@ function start(definition, handler, { browserHistory = false } = {}) {
   const recongnize = createRecognizer(definition);
   const history = (browserHistory ? createHistory : createHashHistory)();
 
-  let isActivated = false;
+  let ignoreNext = false;
+  let currentPath = null;
   let currentState;
 
-  history.listen(({pathname, search, action}) => {
-    currentState = recongnize(pathname + search);
-    if (!isActivated) {
-      isActivated = true;
-    } else if (action === 'POP') {
-      handler(currentState);
+  history.listen(({ pathname, search, action }) => {
+    currentPath = pathname + search;
+
+    if (ignoreNext) {
+      ignoreNext = false;
+      return;
     }
+
+    currentState = recongnize(currentPath);
+
+    if (!currentState) {
+      throw new Error(`cannot recongnize ${currentPath}`);
+    }
+
+    if (currentState.redirectTo) {
+      ignoreNext = true;
+      history.push(currentState.redirectTo);
+    }
+
+    handler(currentState);
   });
 
-  return function (path) {
-    if (path == null) {
+  return function navTo(path) {
+    if (!path || path === currentPath) {
       return currentState;
     }
+
     history.push(path);
     // Route change listen handler is sync,
     // so we can return new state within the same run loop
