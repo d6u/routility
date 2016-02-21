@@ -1,32 +1,16 @@
 'use strict';
 
 const webpack = require('webpack');
+const baseConfig = require('./webpack.config.base');
 
-module.exports = {
-  output: {
-    library: 'Routility',
-    libraryTarget: 'umd'
-  },
-
-  devtool: 'source-map',
-
-  module: {
-    loaders: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: 'babel',
-      }
-    ]
-  },
-
+module.exports = Object.assign(baseConfig, {
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({
       compressor: {
         screw_ie8: true,
-        warnings: false
+        warnings: false,
       }
-    })
+    }),
   ]
-};
+});
