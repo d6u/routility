@@ -1,5 +1,10 @@
 # Routility
 
+[![npm version](https://badge.fury.io/js/routility.svg)](https://badge.fury.io/js/routility)
+[![Circle CI](https://circleci.com/gh/Routility/routility/tree/master.svg?style=svg)](https://circleci.com/gh/Routility/routility/tree/master)
+
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/routility.svg)](https://saucelabs.com/u/routility)
+
 A generic routing utility navigate users in browser and convert URLs to objects, so your application logic can consume them without wrestling with a specify API, which uncovers the endless possibilities of doing awesome stuff. Because all you need to do now is managing data instead of learning 3rd party libraries. This works exceptionally great with architectures that are reactive or has a single source of truth, e.g. React, Redux or Flux in general.
 
 **Before reaching 1.0, API and semantic will change between minor versions.**
