@@ -1,3 +1,4 @@
+import { createMemoryHistory } from 'history';
 import { r, redirect, start, parse } from '../../src/index';
 
 describe('r', function () {
@@ -137,6 +138,12 @@ describe('start', function () {
     ])
   );
 
+  let opts;
+
+  beforeEach(function () {
+    opts = { _history: createMemoryHistory() };
+  });
+
   it('invokes handler with initial state', function (done) {
     start(r('/', 'root'), function (state) {
       try {
@@ -148,7 +155,7 @@ describe('start', function () {
       } catch (err) {
         done(err);
       }
-    });
+    }, opts);
   });
 
   it('invokes handler with initial redirect state', function (done) {
@@ -166,7 +173,7 @@ describe('start', function () {
       } catch (err) {
         done(err);
       }
-    });
+    }, opts);
   });
 
   it('invokes handler with new state when use navTo helper', function (done) {
@@ -192,7 +199,7 @@ describe('start', function () {
       } catch (err) {
         done(err);
       }
-    });
+    }, opts);
 
     navTo('/user/123');
   });
@@ -219,13 +226,13 @@ describe('start', function () {
       } catch (err) {
         done(err);
       }
-    });
+    }, opts);
 
     navTo('/sign-up');
   });
 
   it('navTo returns new state when called with new path', function () {
-    const navTo = start(routes, function (state) {});
+    const navTo = start(routes, function (state) {}, opts);
     const result = navTo('/user/123');
 
     expect(result).toEqual({
@@ -240,7 +247,7 @@ describe('start', function () {
   });
 
   it('navTo returns new state when hit redirect route', function () {
-    const navTo = start(routes, function (state) {});
+    const navTo = start(routes, function (state) {}, opts);
     const result = navTo('/sign-up');
 
     expect(result).toEqual({
@@ -253,15 +260,17 @@ describe('start', function () {
     });
   });
 
-  it('navTo to same path should not ', function () {
+  it('navTo to same path should not invoke handler', function () {
     let skippedInitial = false;
+
     const navTo = start(routes, function (state) {
       if (!skippedInitial) {
         skippedInitial = true;
         return;
       }
       throw new Error('should not invoke');
-    });
+    }, opts);
+
     navTo('/login');
     navTo('/login');
   });

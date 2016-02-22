@@ -16,12 +16,17 @@
 
     var routes = ( // Parentheses are not required, it looks nice to align all the routes
       r('/', 'root', [
-        redirect('/', '/login'),
+        redirect('/', '/sign-up'),
+        redirect('/sign-up', '/login'),
         r('/login', 'login'),
         r('/user/:id', 'user', [
           r('/', 'index'), // If you don't define "/", "/user/:id" won't be handled
           r('/profile', 'profile')
-        ])
+        ]),
+        r('/about/*path', 'about', [
+          r('/', 'index'),
+          r('/detail', 'detail')
+        ]),
       ])
     );
 
@@ -30,6 +35,8 @@
 
     var navTo = Routility.start(routes, function (state) {
       prettyPrint('handler', state);
+    }, {
+      browserHistory: true
     });
 
     prettyPrint('navTo', navTo());

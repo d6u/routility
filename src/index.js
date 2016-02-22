@@ -46,12 +46,13 @@ function redirect(path, targetPath) {
  *                                     forward button to navigate.
  * @param {Object}          opts
  * @param {Object}          [opts.browserHistory = false] If true, will use HTML5 push state to update URL
+ * @param {Object}          [opts._history]               **TESTING ONLY** used to stub history instance with in memory history
  *
  * @return {navTo} A function to help update current route and get current state
  */
-function start(definition, handler, { browserHistory = false } = {}) {
+function start(definition, handler, { browserHistory = false, _history } = {}) {
   const recongnize = createRecognizer(definition);
-  const history = (browserHistory ? createHistory : createHashHistory)();
+  const history = _history || (() => (browserHistory ? createHistory : createHashHistory)())();
 
   let ignoreNext = false;
   let currentPath = null;
