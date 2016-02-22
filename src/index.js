@@ -52,7 +52,14 @@ function redirect(path, targetPath) {
  */
 function start(definition, handler, { browserHistory = false, _history } = {}) {
   const recongnize = createRecognizer(definition);
-  const history = _history || (() => (browserHistory ? createHistory : createHashHistory)())();
+
+  let history;
+
+  if (_history) {
+    history = _history;
+  } else {
+    history = (browserHistory ? createHistory : createHashHistory)();
+  }
 
   let ignoreNext = false;
   let currentPath = null;

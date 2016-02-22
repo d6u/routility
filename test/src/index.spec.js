@@ -275,4 +275,13 @@ describe('start', function () {
     navTo('/login');
   });
 
+  it('throws when navTo undefined path', function () {
+    function shouldThrow() {
+      const navTo = start(routes, function (state) {}, opts);
+      navTo('/undefined');
+    }
+
+    expect(shouldThrow).toThrowError('cannot recongnize /undefined');
+  });
+
 });
