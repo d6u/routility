@@ -50,8 +50,8 @@
     "webpack": "^1.12.13"
   },
   "scripts": {
-    "lint": "eslint src *.js",
-    "watch:lint": "npm run lint -s && onchange 'src/**/*.js' './*.js' -v -- npm run lint -s",
+    "lint": "eslint *.js src test",
+    "watch:lint": "npm run lint -s && onchange './*.js' 'src/**/*.js' 'test/**/*.js' -v -- npm run lint -s",
     "test": "karma start",
     "watch:test": "karma start --no-single-run",
     "check": "npm run lint && npm test",

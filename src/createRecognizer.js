@@ -3,13 +3,13 @@ import RouteRecognizer from 'route-recognizer';
 /**
  * Generate route description for route-recognizer
  *
- * @param {RouteDefinition|RedirectDefinition} definition
+ * @param {RouteDefinition|RedirectDefinition} definition Created by "r"
  *
- * @return {Object[][]} The base object should look like:
- *                      {
- *                        path: string;
- *                        handler: Object;
- *                      }
+ * @return {Array<Array<Object>>} The base object should look like:
+ *                                {
+ *                                	path: string;
+ *                                 	handler: Object;
+ *                                }
  */
 function generateDescriptions(definition) {
   const path = definition.path;

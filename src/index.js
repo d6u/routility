@@ -114,8 +114,8 @@ function parse(definition, path) {
     return recongnize(path);
   }
 
-  return function (path) {
-    return recongnize(path);
+  return function (_path) {
+    return recongnize(_path);
   };
 }
 

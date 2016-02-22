@@ -1,3 +1,5 @@
+/*eslint no-process-env:0*/
+
 'use strict';
 
 const path = require('path');
@@ -127,7 +129,7 @@ module.exports = function (config) {
     singleRun: true,
     concurrency: Infinity,
 
-    customLaunchers: customLaunchers,
+    customLaunchers,
 
     // Webpack preprocessor
     webpack: {
