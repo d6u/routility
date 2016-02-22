@@ -120,12 +120,12 @@ module.exports = function (config) {
     preprocessors: {
       'test/index.js': [ 'webpack', 'sourcemap' ]
     },
-    reporters: process.env.TRAVIS ? [ 'spec', 'saucelabs', 'coverage' ] : [ 'spec', 'coverage' ],
+    reporters: process.env.CIRCLECI ? [ 'spec', 'saucelabs', 'coverage' ] : [ 'spec', 'coverage' ],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: process.env.TRAVIS ? Object.keys(customLaunchers) : [ 'Chrome' ],
+    browsers: process.env.CIRCLECI ? Object.keys(customLaunchers) : [ 'Chrome' ],
     singleRun: true,
     concurrency: Infinity,
 
@@ -141,11 +141,11 @@ module.exports = function (config) {
       },
     },
 
-    // // Saucelabs launcher
-    // sauceLabs: {
-    //   testName: 'react-container-query',
-    //   public: 'public',
-    // },
+    // Saucelabs launcher
+    sauceLabs: {
+      testName: 'routility',
+      public: 'public',
+    },
 
     coverageReporter: {
       reporters: [
